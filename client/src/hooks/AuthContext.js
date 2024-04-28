@@ -1,20 +1,22 @@
+// src/hooks/AuthContext.js
+
 import React, { createContext, useContext, useState } from 'react';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [auth, setAuth] = useState({ username: null, customer_id: null });
 
   const login = (userData) => {
-    setUser(userData);
+    setAuth(userData);
   };
 
   const logout = () => {
-    setUser(null);
+    setAuth({ username: null, customer_id: null });
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ auth, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

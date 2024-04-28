@@ -1,4 +1,4 @@
-// src/components/LoginPage.js
+
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -21,7 +21,7 @@ function LoginPage() {
 
       const data = await response.json();
       if (response.ok) {
-        login({ username: data.username });
+        login({ username: data.username, customer_id: data.customer_id });
         navigate('/dashboard');
       } else {
         setError(data.error);
