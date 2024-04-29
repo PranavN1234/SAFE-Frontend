@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/AuthContext';
@@ -21,7 +19,7 @@ function LoginPage() {
 
       const data = await response.json();
       if (response.ok) {
-        login({ username: data.username, customer_id: data.customer_id });
+        login({ username: data.username, customer_id: data.customer_id, fullname: data.fullname,is_admin: data.is_admin });
         navigate('/dashboard');
       } else {
         setError(data.error);

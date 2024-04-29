@@ -1,18 +1,26 @@
-// src/hooks/AuthContext.js
-
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [auth, setAuth] = useState({ username: null, customer_id: null });
+  const [auth, setAuth] = useState(() => {
+    // Retrieve auth data from localStorage if available
+    const savedAuth = localStorage.getItem('auth');
+    return savedAuth ? JSON.parse(savedAuth) : { username: null, customer_id: null, fullname: null, is_admin: null };
+  });
+
+  useEffect(() => {
+    // Update localStorage when auth changes
+    localStorage.setItem('auth', JSON.stringify(auth));
+  }, [auth]);
 
   const login = (userData) => {
     setAuth(userData);
   };
 
   const logout = () => {
-    setAuth({ username: null, customer_id: null });
+    setAuth({ username: null, customer_id: null, fullname: null, is_admin: null });
+    localStorage.removeItem('auth'); // Clear auth data from localStorage on logout
   };
 
   return (
