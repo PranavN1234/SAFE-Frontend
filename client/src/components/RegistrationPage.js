@@ -1,7 +1,8 @@
-// RegistrationPage.js
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Container, Box, TextField, Button, Typography, Paper, Link } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { tokens } from '../theme'; // Ensure the correct path to your theme tokens
 
 function RegistrationPage() {
   const [registrationData, setRegistrationData] = useState({
@@ -15,6 +16,8 @@ function RegistrationPage() {
     password: ''
   });
   const navigate = useNavigate();
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -36,9 +39,9 @@ function RegistrationPage() {
 
       const data = await response.json();
       if (response.ok) {
-        navigate('/login'); // Redirect to login page on successful registration
+        navigate('/login');
       } else {
-        alert(data.error); // Display error from server
+        alert(data.error);
       }
     } catch (error) {
       alert('Failed to register. Please try again later.');
@@ -46,24 +49,56 @@ function RegistrationPage() {
   };
 
   return (
-    <div>
-      <h1>Register</h1>
-      <form onSubmit={(e) => {
-        e.preventDefault();
-        handleRegistration();
+    <Container component="main" maxWidth="sm">
+      <Paper elevation={6} sx={{
+        marginTop: 8,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: 3,
+        backgroundColor: theme.palette.background.default
       }}>
-        <input type="text" name="cfname" value={registrationData.cfname} onChange={handleInputChange} placeholder="First Name" required />
-        <input type="text" name="clname" value={registrationData.clname} onChange={handleInputChange} placeholder="Last Name" required />
-        <input type="text" name="cstreet" value={registrationData.cstreet} onChange={handleInputChange} placeholder="Street" required />
-        <input type="text" name="ccity" value={registrationData.ccity} onChange={handleInputChange} placeholder="City" required />
-        <input type="text" name="czip" value={registrationData.czip} onChange={handleInputChange} placeholder="Zip Code" required />
-        <input type="text" name="cstate" value={registrationData.cstate} onChange={handleInputChange} placeholder="State" required />
-        <input type="text" name="username" value={registrationData.username} onChange={handleInputChange} placeholder="Username" required />
-        <input type="password" name="password" value={registrationData.password} onChange={handleInputChange} placeholder="Password" required />
-        <button type="submit">Submit</button>
-      </form>
-      <p>Already registered? <a href="/login">Login Here</a></p>
-    </div>
+        <Typography component="h1" variant="h5" sx={{ color: colors.blueAccent[500] }}>
+          Register
+        </Typography>
+        <Box component="form" onSubmit={(e) => {
+          e.preventDefault();
+          handleRegistration();
+        }} sx={{ mt: 1, width: '100%' }}>
+          {Object.keys(registrationData).map(key => (
+            <TextField
+              key={key}
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id={key}
+              label={key.charAt(0).toUpperCase() + key.slice(1)}
+              name={key}
+              value={registrationData[key]}
+              onChange={handleInputChange}
+              autoComplete="off"
+              sx={{ borderColor: colors.gray[300] }}
+            />
+          ))}
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            sx={{ mt: 3, mb: 2, bgcolor: theme.palette.primary.main }}
+          >
+            Submit
+          </Button>
+        </Box>
+        <Typography variant="body2">
+          Already registered? 
+          <Link href="/login" color="secondary">
+            Login Here
+          </Link>
+        </Typography>
+      </Paper>
+    </Container>
   );
 }
 

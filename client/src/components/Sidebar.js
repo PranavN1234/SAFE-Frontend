@@ -1,19 +1,19 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { useAuth } from "../hooks/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 // import 'react-pro-sidebar/dist/css/styles.css';
 import { Box, IconButton, Typography, useTheme, Button } from "@mui/material";
-import { Link } from "react-router-dom";
 import { tokens } from "../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import PeopleIcon from "@mui/icons-material/People";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import LogoutIcon from "@mui/icons-material/Logout";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import PaymentsIcon from '@mui/icons-material/Payments';
+import PaymentsIcon from "@mui/icons-material/Payments";
+import LoginIcon from "@mui/icons-material/Login";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -44,10 +44,15 @@ const SidebarComp = () => {
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
+
   const handleLogout = () => {
     logout(); // Call the logout function from AuthContext
     navigate("/login"); // Redirect to login page after logout
   };
+
+  const isLoggedIn = auth && auth.customer_id;
+  const isAdmin = !!auth && auth.is_admin === 1;
+
   return (
     <Box
       sx={{
@@ -56,14 +61,12 @@ const SidebarComp = () => {
         },
         "& .pro-icon-wrapper": { backgroundColor: "transparent !important" },
         "& .pro-inner-item": { padding: "5px 35px 5px 20px !important" },
-        "& .pro-inner-item: hover": { color: "#868dfb !important" },
+        "& .pro-inner-item:hover": { color: "#868dfb !important" },
         "& .pro-menu-item.active": { color: "#6870fa !important" },
       }}
     >
       <Sidebar collapsed={isCollapsed} style={{ height: "100vh" }}>
         <Menu iconShape="square">
-          {/* LOGO AND MENU ICON */}
-
           {!isCollapsed && (
             <Box mb="25px">
               <Box textAlign="center">
@@ -73,11 +76,13 @@ const SidebarComp = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  {auth.fullname}
+                  {isLoggedIn ? auth.fullname : "Welcome"}
                 </Typography>
-                <Typography variant="h5" color={colors.greenAccent[400]}>
-                  {auth.username}
-                </Typography>
+                {isLoggedIn && (
+                  <Typography variant="h5" color={colors.greenAccent[400]}>
+                    {auth.username}
+                  </Typography>
+                )}
               </Box>
             </Box>
           )}
@@ -91,59 +96,67 @@ const SidebarComp = () => {
               setSelected={setSelected}
             />
 
-            <Item
-              title="Update Profile"
-              to="/profile"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            {isLoggedIn && (
+              <>
+                <Item
+                  title="Update Profile"
+                  to="/profile"
+                  icon={<PersonOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
 
-            <Item
-              title="FAQ Page"
-              to="/support"
-              icon={<HelpOutlineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+                <Item
+                  title="Create Account"
+                  to="/create-account"
+                  icon={<AddCircleOutlineIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
 
-            <Item
-              title="Create Account"
-              to="/create-account"
-              icon={<AddCircleOutlineIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+                <Item
+                  title="Send Money"
+                  to="/send-money"
+                  icon={<AttachMoneyIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Pay Loan"
+                  to="/pay-loan"
+                  icon={<PaymentsIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+              </>
+            )}
 
-            <Item
-              title="Manage Access"
-              to="/admin"
-              icon={<PeopleIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            {isLoggedIn && isAdmin && (
+              <Item
+                title="Manage Access"
+                to="/admin"
+                icon={<PeopleIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+            )}
 
-            <Item
-              title="Send Money"
-              to="/send-money"
-              icon={<AttachMoneyIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Pay Loan"
-              to="/pay-loan"
-              icon={<PaymentsIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            {isLoggedIn ? (
+              <MenuItem icon={<LogoutIcon />}>
+                <Button onClick={handleLogout} color="inherit">
+                  Logout
+                </Button>
+              </MenuItem>
+            ) : (
+              <Item
+                title="Login"
+                to="/login"
+                icon={<LoginIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+            )}
           </Box>
-
-          <MenuItem icon={<ExitToAppIcon />}>
-            <Button onClick={handleLogout} color="inherit">
-              Logout
-            </Button>
-          </MenuItem>
         </Menu>
       </Sidebar>
     </Box>

@@ -32,7 +32,7 @@ function App() {
               <Topbar />
               <Routes>
                 <Route path="/login" element={<LoginPage />} />
-                {/* <Route path="/register" element={<RegistrationPage />} /> */}
+                <Route path="/register" element={<RegistrationPage />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/admin" element={<AdminPanel />} />
