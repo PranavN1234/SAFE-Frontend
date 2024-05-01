@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../hooks/AuthContext";
 import { tokens } from "../theme";
-import AccountCreationModal from "./modals/AccountCreationModal";
 import Header from "./Header";
 import { Box, useTheme, Typography, Paper, Grid } from "@mui/material";
 import BarChart from "../visuals/Barchart";
@@ -11,7 +10,6 @@ function Dashboard() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { auth } = useAuth();
-  const [isModalOpen, setModalOpen] = useState(false);
   const [accounts, setAccounts] = useState([]);
   const [balances, setBalances] = useState([]);
   const [transactionHistory, setTransactionHistory] = useState({
@@ -21,7 +19,6 @@ function Dashboard() {
   const [loanInfo, setLoanInfo] = useState([]);
   const [userTransactions, setUserTransactions] = useState([]);
 
-  const toggleModal = () => setModalOpen(!isModalOpen);
 
   useEffect(() => {
     const fetchAccounts = async () => {
@@ -211,54 +208,74 @@ function Dashboard() {
         </Paper>
       </Box>
 
-      <Box m="20px">
-        <Grid container spacing={2}>
+      <Box display="flex" my="1.5rem" gap={2}>
           {accounts.map((account) => {
             if (account.account_type === "Loan") {
               return (
-                <Grid item xs={12} sm={6} key={account.account_number}>
-                  <Paper elevation={3} sx={{ p: 2 }}>
+                
+                  <Paper elevation={3} sx={{ p: 2, flexGrow: 1 }}>
+                    
                     <Typography variant="h3" gutterBottom>
                       Loan Account
                     </Typography>
+                    <Grid container spacing={1} key={account.account_number}>
+                    <Grid item xs={6}>
                     <Typography>
                       Account Name: {account.account_name}
                     </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
                     <Typography>
                       Account Number: {account.account_number}
                     </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
                     <Typography>
                       Loan Amount: {account.LoanInfo.loan_amount}
                     </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
                     <Typography>
                       Loan Months: {account.LoanInfo.loan_months}
                     </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
                     <Typography>
                       Loan Rate: {account.LoanInfo.loan_rate}
                     </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
                     <Typography>
                       Loan Type: {account.LoanInfo.loan_type}
                     </Typography>
+                    </Grid>
                     {account.LoanInfo.student_id && (
+                      <Grid item xs={6}>
                       <Typography>
                         Student ID: {account.LoanInfo.StudentInfo.student_id}
                       </Typography>
+                      </Grid>
                     )}
                     {account.LoanInfo.university_name && (
+                      <Grid item xs={6}>
                       <Typography>
                         University Name:{" "}
                         {account.LoanInfo.StudentInfo.university_name}
                       </Typography>
+                      </Grid>
                     )}
+                    <Grid item xs={6}>
                     <Typography>Date Opened: {account.date_opened}</Typography>
+                    </Grid>
+                    <Grid item xs={6}>
                     <Typography>Status: {account.status}</Typography>
+                    </Grid>
+                    </Grid>
                   </Paper>
-                </Grid>
               );
             }
             return null;
           })}
-        </Grid>
       </Box>
       <Header
         title="Recent transactions"
