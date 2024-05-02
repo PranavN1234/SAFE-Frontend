@@ -6,6 +6,9 @@ import { Box, useTheme, Typography, Paper, Grid } from "@mui/material";
 import BarChart from "../visuals/Barchart";
 import Linechart from "../visuals/Linechart";
 import PieChart from "../visuals/Piechart";
+
+import './Dashboard.css';
+
 function Dashboard() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -104,7 +107,7 @@ function Dashboard() {
       fetchUserTransactions();
     }
   }, []);
-
+  console.log(accounts)
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -207,13 +210,13 @@ function Dashboard() {
           })}
         </Paper>
       </Box>
-
+          {/* Loans Account Tile */}
       <Box display="flex" my="1.5rem" gap={2}>
           {accounts.map((account) => {
             if (account.account_type === "Loan") {
               return (
-                
-                  <Paper elevation={3} sx={{ p: 2, flexGrow: 1 }}>
+                  <div className="container">
+                  <Paper elevation={3} sx={{ p: 2 }} className="paper-container">
                     
                     <Typography variant="h3" gutterBottom>
                       Loan Account
@@ -249,21 +252,90 @@ function Dashboard() {
                       Loan Type: {account.LoanInfo.loan_type}
                     </Typography>
                     </Grid>
-                    {account.LoanInfo.student_id && (
-                      <Grid item xs={6}>
-                      <Typography>
-                        Student ID: {account.LoanInfo.StudentInfo.student_id}
-                      </Typography>
-                      </Grid>
-                    )}
-                    {account.LoanInfo.university_name && (
-                      <Grid item xs={6}>
-                      <Typography>
-                        University Name:{" "}
-                        {account.LoanInfo.StudentInfo.university_name}
-                      </Typography>
-                      </Grid>
-                    )}
+                   
+                      {account.LoanInfo.loan_type === "Home" && (
+                        <>
+                          <Grid item xs={6}>
+                            {/*  home loan details */}
+                          <Typography>
+                            Built Year(Change this): {account.LoanInfo.HomeInfo.builtyear}
+                          </Typography>
+                          </Grid>
+
+                          <Grid item xs={6}>
+                          <Typography>
+                          hianumber (wtf is hianumber??) : {account.LoanInfo.HomeInfo.hianumber}
+                          </Typography>
+                          </Grid>
+
+                          <Grid item xs={6}>
+                          <Typography>
+                          Name (icname ??) : {account.LoanInfo.HomeInfo.icname}
+                          </Typography>
+                          </Grid>
+
+                          <Grid item xs={6}>
+                          <Typography>
+                          Street (Address in one line ???): {account.LoanInfo.HomeInfo.icstreet}
+                          </Typography>
+                          </Grid>
+
+                          <Grid item xs={6}>
+                          <Typography>
+                          City : {account.LoanInfo.HomeInfo.iccity}
+                          </Typography>
+                          </Grid>
+
+                          <Grid item xs={6}>
+                          <Typography>
+                          State : {account.LoanInfo.HomeInfo.icstate}
+                          </Typography>
+                          </Grid>
+
+                          <Grid item xs={6}>
+                          <Typography>
+                          Zip Code : {account.LoanInfo.HomeInfo.iczip}
+                          </Typography>
+                          </Grid>
+
+                          <Grid item xs={6}>
+                          <Typography>
+                          Premium : {account.LoanInfo.HomeInfo.premium}
+                          </Typography>
+                          </Grid>
+
+                        </>
+                          
+                          
+                        
+                      )}
+
+                      {account.LoanInfo.loan_type === "Student" && (
+                        <>
+                        <Grid item xs={6}>
+                          {/*  student loan details */}
+                        <Typography>
+                          Student Id: {account.LoanInfo.StudentInfo.student_id}
+                        </Typography>
+                        </Grid>
+
+                        <Grid item xs={6}>
+                        <Typography>
+                          University Name: {account.LoanInfo.StudentInfo.university_name}
+                        </Typography>
+                        </Grid>
+
+                        <Grid item xs={6}>
+                        <Typography>
+                          Graduated?(Change this): {account.LoanInfo.StudentInfo.status}
+                        </Typography>
+                        </Grid>
+                        
+                        </>
+
+                          
+                        
+                      )}
                     <Grid item xs={6}>
                     <Typography>Date Opened: {account.date_opened}</Typography>
                     </Grid>
@@ -272,6 +344,7 @@ function Dashboard() {
                     </Grid>
                     </Grid>
                   </Paper>
+                  </div>
               );
             }
             return null;
