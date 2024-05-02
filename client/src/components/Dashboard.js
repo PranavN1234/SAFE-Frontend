@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../hooks/AuthContext";
 import { tokens } from "../theme";
-import AccountCreationModal from "./modals/AccountCreationModal";
 import Header from "./Header";
 import { Box, useTheme, Typography, Paper, Grid } from "@mui/material";
 import BarChart from "../visuals/Barchart";
 import Linechart from "../visuals/Linechart";
 import PieChart from "../visuals/Piechart";
+
+import './Dashboard.css';
+
 function Dashboard() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { auth } = useAuth();
-  const [isModalOpen, setModalOpen] = useState(false);
   const [accounts, setAccounts] = useState([]);
   const [balances, setBalances] = useState([]);
   const [transactionHistory, setTransactionHistory] = useState({
@@ -21,7 +22,6 @@ function Dashboard() {
   const [loanInfo, setLoanInfo] = useState([]);
   const [userTransactions, setUserTransactions] = useState([]);
 
-  const toggleModal = () => setModalOpen(!isModalOpen);
 
   useEffect(() => {
     const fetchAccounts = async () => {
@@ -107,7 +107,7 @@ function Dashboard() {
       fetchUserTransactions();
     }
   }, []);
-
+  console.log(accounts)
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -210,55 +210,145 @@ function Dashboard() {
           })}
         </Paper>
       </Box>
-
-      <Box m="20px">
-        <Grid container spacing={2}>
+          {/* Loans Account Tile */}
+      <Box display="flex" my="1.5rem" gap={2}>
           {accounts.map((account) => {
             if (account.account_type === "Loan") {
               return (
-                <Grid item xs={12} sm={6} key={account.account_number}>
-                  <Paper elevation={3} sx={{ p: 2 }}>
+                  <div className="container">
+                  <Paper elevation={3} sx={{ p: 2 }} className="paper-container">
+                    
                     <Typography variant="h3" gutterBottom>
                       Loan Account
                     </Typography>
+                    <Grid container spacing={1} key={account.account_number}>
+                    <Grid item xs={6}>
                     <Typography>
                       Account Name: {account.account_name}
                     </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
                     <Typography>
                       Account Number: {account.account_number}
                     </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
                     <Typography>
                       Loan Amount: {account.LoanInfo.loan_amount}
                     </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
                     <Typography>
                       Loan Months: {account.LoanInfo.loan_months}
                     </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
                     <Typography>
                       Loan Rate: {account.LoanInfo.loan_rate}
                     </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
                     <Typography>
                       Loan Type: {account.LoanInfo.loan_type}
                     </Typography>
-                    {account.LoanInfo.student_id && (
-                      <Typography>
-                        Student ID: {account.LoanInfo.StudentInfo.student_id}
-                      </Typography>
-                    )}
-                    {account.LoanInfo.university_name && (
-                      <Typography>
-                        University Name:{" "}
-                        {account.LoanInfo.StudentInfo.university_name}
-                      </Typography>
-                    )}
+                    </Grid>
+                   
+                      {account.LoanInfo.loan_type === "Home" && (
+                        <>
+                          <Grid item xs={6}>
+                            {/*  home loan details */}
+                          <Typography>
+                            Built Year(Change this): {account.LoanInfo.HomeInfo.builtyear}
+                          </Typography>
+                          </Grid>
+
+                          <Grid item xs={6}>
+                          <Typography>
+                          hianumber (wtf is hianumber??) : {account.LoanInfo.HomeInfo.hianumber}
+                          </Typography>
+                          </Grid>
+
+                          <Grid item xs={6}>
+                          <Typography>
+                          Name (icname ??) : {account.LoanInfo.HomeInfo.icname}
+                          </Typography>
+                          </Grid>
+
+                          <Grid item xs={6}>
+                          <Typography>
+                          Street (Address in one line ???): {account.LoanInfo.HomeInfo.icstreet}
+                          </Typography>
+                          </Grid>
+
+                          <Grid item xs={6}>
+                          <Typography>
+                          City : {account.LoanInfo.HomeInfo.iccity}
+                          </Typography>
+                          </Grid>
+
+                          <Grid item xs={6}>
+                          <Typography>
+                          State : {account.LoanInfo.HomeInfo.icstate}
+                          </Typography>
+                          </Grid>
+
+                          <Grid item xs={6}>
+                          <Typography>
+                          Zip Code : {account.LoanInfo.HomeInfo.iczip}
+                          </Typography>
+                          </Grid>
+
+                          <Grid item xs={6}>
+                          <Typography>
+                          Premium : {account.LoanInfo.HomeInfo.premium}
+                          </Typography>
+                          </Grid>
+
+                        </>
+                          
+                          
+                        
+                      )}
+
+                      {account.LoanInfo.loan_type === "Student" && (
+                        <>
+                        <Grid item xs={6}>
+                          {/*  student loan details */}
+                        <Typography>
+                          Student Id: {account.LoanInfo.StudentInfo.student_id}
+                        </Typography>
+                        </Grid>
+
+                        <Grid item xs={6}>
+                        <Typography>
+                          University Name: {account.LoanInfo.StudentInfo.university_name}
+                        </Typography>
+                        </Grid>
+
+                        <Grid item xs={6}>
+                        <Typography>
+                          Graduated?(Change this): {account.LoanInfo.StudentInfo.status}
+                        </Typography>
+                        </Grid>
+                        
+                        </>
+
+                          
+                        
+                      )}
+                    <Grid item xs={6}>
                     <Typography>Date Opened: {account.date_opened}</Typography>
+                    </Grid>
+                    <Grid item xs={6}>
                     <Typography>Status: {account.status}</Typography>
+                    </Grid>
+                    </Grid>
                   </Paper>
-                </Grid>
+                  </div>
               );
             }
             return null;
           })}
-        </Grid>
       </Box>
       <Header
         title="Recent transactions"
