@@ -3,10 +3,9 @@ import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { useAuth } from "../hooks/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 // import 'react-pro-sidebar/dist/css/styles.css';
-import { Box, IconButton, Typography, useTheme, Button } from "@mui/material";
+import { Box, Typography, useTheme, Button } from "@mui/material";
 import { tokens } from "../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import PeopleIcon from "@mui/icons-material/People";
@@ -42,6 +41,7 @@ const SidebarComp = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const colors = tokens(theme.palette.mode);
+  // eslint-disable-next-line
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
 
@@ -68,10 +68,10 @@ const SidebarComp = () => {
       <Sidebar collapsed={isCollapsed} style={{ height: "100vh" }}>
         <Menu iconShape="square">
           {!isCollapsed && (
-            <Box mb="25px">
+            <Box mb="1.5rem">
               <Box textAlign="center">
                 <Typography
-                  variant="h2"
+                  variant="h1"
                   color={colors.gray[100]}
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
@@ -87,7 +87,7 @@ const SidebarComp = () => {
             </Box>
           )}
 
-          <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+          <Box marginLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="Dashboard"
               to="/dashboard"
@@ -98,18 +98,19 @@ const SidebarComp = () => {
 
             {isLoggedIn && (
               <>
-                <Item
-                  title="Update Profile"
-                  to="/profile"
-                  icon={<PersonOutlinedIcon />}
-                  selected={selected}
-                  setSelected={setSelected}
-                />
 
                 <Item
                   title="Create Account"
                   to="/create-account"
                   icon={<AddCircleOutlineIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+
+                <Item
+                  title="Update Profile"
+                  to="/profile"
+                  icon={<PersonOutlinedIcon />}
                   selected={selected}
                   setSelected={setSelected}
                 />
