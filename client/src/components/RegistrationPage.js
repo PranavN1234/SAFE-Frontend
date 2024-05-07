@@ -77,6 +77,7 @@ function RegistrationPage() {
               name={key}
               value={registrationData[key]}
               onChange={handleInputChange}
+              type={key === 'password' ? 'password' : 'text'}
               autoComplete="off"
               sx={{ borderColor: colors.gray[300] }}
             />

@@ -90,16 +90,16 @@ const SendMoney = () => {
               textAlign: "center",
               bgcolor:
                 theme.palette.mode === "dark"
-                  ? colors.gray[500]
-                  : colors.primary[700],
+                  ? colors.gray[200]
+                  : colors.primary[400],
               color:
                 theme.palette.mode === "dark"
-                  ? theme.palette.text.primary
-                  : colors.gray[100],
+                  ? colors.gray[700]
+                  : colors.gray[400],
             }}
           >
             <CardContent>
-              <Typography variant="h5" color="text.secondary">
+              <Typography variant="h5" color={colors.gray[700]}>
                 Checking
               </Typography>
               <Typography variant="h6">${balances.checking}</Typography>
@@ -110,17 +110,17 @@ const SendMoney = () => {
               minWidth: 150,
               textAlign: "center",
               bgcolor:
-                theme.palette.mode === "dark"
-                  ? colors.gray[500]
-                  : colors.primary[700],
+                  theme.palette.mode === "dark"
+                      ? colors.gray[200]
+                      : colors.primary[400],
               color:
-                theme.palette.mode === "dark"
-                  ? theme.palette.text.primary
-                  : colors.gray[100],
+                  theme.palette.mode === "dark"
+                      ? colors.gray[700]
+                      : colors.gray[400],
             }}
           >
             <CardContent>
-              <Typography variant="h5" color="text.secondary">
+              <Typography variant="h5" color={colors.gray[700]}>
                 Savings
               </Typography>
               <Typography variant="h6">${balances.savings}</Typography>

@@ -6,8 +6,9 @@ import { Box, useTheme, Typography, Paper, Grid } from "@mui/material";
 import BarChart from "../visuals/Barchart";
 import Linechart from "../visuals/Linechart";
 import PieChart from "../visuals/Piechart";
-
+import DeleteIcon from '@mui/icons-material/Delete';
 import './Dashboard.css';
+import { IconButton, Tooltip } from "@mui/material";
 
 function Dashboard() {
   const theme = useTheme();
@@ -108,6 +109,21 @@ function Dashboard() {
     }
   }, []);
   console.log(accounts)
+
+  const handleDeleteAccount = async (accountNumber) => {
+    if (window.confirm("Are you sure you want to delete this account?")) {
+      const response = await fetch(`http://127.0.0.1:8000/delete_account/${accountNumber}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        alert('Account deleted successfully');
+        // Optionally refresh the accounts list or navigate away
+      } else {
+        alert('Failed to delete account');
+      }
+    }
+  };
+
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">

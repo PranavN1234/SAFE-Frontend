@@ -126,7 +126,7 @@ const LoanPayment = () => {
         <Paper
           key={index}
           elevation={3}
-          sx={{ p: 3, m: 2, mb: 4, bgcolor: theme.palette.background.default }}
+          sx={{ p: 3, m: 2, mb: 4, bgcolor: colors.primary[400] }}
         >
           <Typography variant="h6">
             Loan Details (Account: {loan.account_number})
@@ -202,11 +202,11 @@ const LoanDetailCard = ({ title, value, theme, colors }) => (
       minWidth: 150,
       textAlign: "center",
       bgcolor:
-        theme.palette.mode === "dark" ? colors.gray[500] : colors.primary[700],
+        theme.palette.mode === "dark" ? colors.gray[500] : colors.primary[400],
       color:
         theme.palette.mode === "dark"
           ? theme.palette.text.primary
-          : colors.gray[100],
+          : colors.gray[400],
     }}
   >
     <CardContent>

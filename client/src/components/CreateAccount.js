@@ -16,8 +16,10 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "./Header";
 import { useAuth } from "../hooks/AuthContext";
 import { RadioGroup } from "formik-material-ui";
+import {useNavigate} from "react-router-dom";
 
 const CreateAccount = () => {
+  const navigate = useNavigate();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const { auth } = useAuth();
   const handleFormSubmit = async (values) => {
@@ -33,6 +35,7 @@ const CreateAccount = () => {
     if (response.ok) {
       const result = await response.json();
       alert(result.message);
+      navigate('/dashboard');
     } else {
       alert("Error creating account");
     }
@@ -437,7 +440,7 @@ const CreateAccount = () => {
 
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                Create New User
+                Create Account
               </Button>
             </Box>
           </form>
